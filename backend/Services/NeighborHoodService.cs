@@ -8,19 +8,19 @@ public class NeighborhoodService : IneighborhoodService{
     public NeighborhoodService(NeighborhoodRepository neighborhoodRepository){
         _neighborhoodRepository = neighborhoodRepository;
     }
-    public async Task<NeighborhoodModel> AddNeighborhood([FromBody] NeighborhoodModel neighborhood){
+    public async Task<NeighborhoodModel> Add([FromBody] NeighborhoodModel neighborhood){
         int id = neighborhood.Id;
-        NeighborhoodModel neighborhoodReturned = await _neighborhoodRepository.FindNeighborhoodById(id);
+        NeighborhoodModel neighborhoodReturned = await _neighborhoodRepository.FindById(id);
         if (neighborhoodReturned != null){
              throw new Exception("Bairro já cadastrado");
         }
 
-        NeighborhoodModel addedNeighborhood = await _neighborhoodRepository.AddNeighborhood(neighborhood);
+        NeighborhoodModel addedNeighborhood = await _neighborhoodRepository.Add(neighborhood);
         return addedNeighborhood;
     }
-    public async Task<NeighborhoodModel> GetNeighborhoodById(int id)
+    public async Task<NeighborhoodModel> FindById(int id)
     {
-        NeighborhoodModel neighborhood = await _neighborhoodRepository.FindNeighborhoodById(id);
+        NeighborhoodModel neighborhood = await _neighborhoodRepository.FindById(id);
         if (neighborhood == null)
         {
             throw new Exception("Bairro não encontrado");
@@ -28,31 +28,31 @@ public class NeighborhoodService : IneighborhoodService{
         return neighborhood;
     }
 
-    public async Task<List<NeighborhoodModel>> GetAllNeighborhood(){
-        List<NeighborhoodModel> neighborhoods = await _neighborhoodRepository.FindAllNeighborhood();
+    public async Task<List<NeighborhoodModel>> FindAll(){
+        List<NeighborhoodModel> neighborhoods = await _neighborhoodRepository.FindAll();
         return neighborhoods;
     }
 
-    public async Task<NeighborhoodModel> UpdateNeighborhood(int id, NeighborhoodModel neighborhoodToupdate)
+    public async Task<NeighborhoodModel> Update(int id, NeighborhoodModel neighborhoodToupdate)
     {
-        NeighborhoodModel findedNeighborhood = await _neighborhoodRepository.FindNeighborhoodById(id);
+        NeighborhoodModel findedNeighborhood = await _neighborhoodRepository.FindById(id);
         if (findedNeighborhood == null){
             throw new Exception("Bairro não encontrado");
         }
 
-        NeighborhoodModel updatedNeighborhood = await _neighborhoodRepository.UpdateNeighborhoor(neighborhoodToupdate, findedNeighborhood);
+        NeighborhoodModel updatedNeighborhood = await _neighborhoodRepository.Update(neighborhoodToupdate, findedNeighborhood);
         return updatedNeighborhood;
     }
 
-    public async Task<NeighborhoodModel> DeleteNeighborhood(int id)
+    public async Task<NeighborhoodModel> Delete(int id)
     {
-        NeighborhoodModel neighborhoodToDelete = await _neighborhoodRepository.FindNeighborhoodById(id);
+        NeighborhoodModel neighborhoodToDelete = await _neighborhoodRepository.FindById(id);
         if (neighborhoodToDelete == null)
         {
             throw new Exception("Bairro não encontrado");
         }
 
-        NeighborhoodModel deletedNeighborhood = await _neighborhoodRepository.DeleteNeighborhood(neighborhoodToDelete);
+        NeighborhoodModel deletedNeighborhood = await _neighborhoodRepository.Delete(neighborhoodToDelete);
         return deletedNeighborhood;
 
     }

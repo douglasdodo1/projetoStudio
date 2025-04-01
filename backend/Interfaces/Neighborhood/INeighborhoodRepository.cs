@@ -1,7 +1,7 @@
 public interface INeighborhoodRepository {
-    Task<NeighborhoodModel> AddNeighborhood(NeighborhoodModel neighborhood);
-    Task<NeighborhoodModel> FindNeighborhoodById(int id);
-    Task<List<NeighborhoodModel>> FindAllNeighborhood();
-    Task<NeighborhoodModel> UpdateNeighborhoor(NeighborhoodModel neighborhoodToUpdate, NeighborhoodModel findedNeighborhood);
-    Task<NeighborhoodModel> DeleteNeighborhood(NeighborhoodModel neighborhood);
+    Task<NeighborhoodModel> Add(NeighborhoodModel neighborhood);
+    Task<NeighborhoodModel> FindById(int id);
+    Task<List<NeighborhoodModel>> FindAll();
+    Task<NeighborhoodModel> Update(NeighborhoodModel neighborhoodToUpdate, NeighborhoodModel findedNeighborhood);
+    Task<NeighborhoodModel> Delete(NeighborhoodModel neighborhood);
     }

@@ -7,24 +7,25 @@ public class StreetService : IStreetService{
         _streetRepository = streetRepository;
     }
 
-    public async Task<StreetModel> AddStreet(StreetModel street)
+    public async Task<StreetModel> Add(StreetModel street)
     {
-        StreetModel streetFinded = await _streetRepository.FindStreetById(street.Id);
-        if (streetFinded == null){
-            throw new Exception("Rua não encontrada");
+        StreetModel streetFinded = await _streetRepository.FindById(street.Id);
+        if (streetFinded != null){
+            throw new Exception("Rua já cadastrada");
         }
-        StreetModel streetModel = await _streetRepository.AddStreet(street);
+        StreetModel streetModel = await _streetRepository.Add(street);
         return streetModel;
     }
 
-    public Task<List<StreetModel>> FindAllStreet()
+    public async Task<List<StreetModel>> FindAll()
     {
-        throw new NotImplementedException();
+        List<StreetModel> allStreets = await _streetRepository.FindAll();
+        return allStreets;
     }
 
-    public async Task<StreetModel> FindStreetById(int id)
+    public async Task<StreetModel> FindById(int id)
     {
-        StreetModel street = await _streetRepository.FindStreetById(id);
+        StreetModel street = await _streetRepository.FindById(id);
         if (street == null){
             throw new Exception("Rua não encontrada");
         }
@@ -32,13 +33,27 @@ public class StreetService : IStreetService{
         
     }
 
-    public async Task<StreetModel> UpdateStreet(int id, StreetModel streetToUpdate)
+    public async Task<StreetModel> Update(int id, StreetModel streetToUpdate)
     {
-        throw new NotImplementedException();
+        StreetModel findedStreet = await _streetRepository.FindById(id);
+        if (findedStreet == null) 
+        {
+            throw new Exception("rua não encontrada");
+        }
+
+        StreetModel UpdatedStreet = await _streetRepository.Update(streetToUpdate, findedStreet);
+        return UpdatedStreet;        
     }
 
-    public async Task<StreetModel> DeleteStreet(int id)
+    public async Task<StreetModel> Delete(int id)
     {
-        throw new NotImplementedException();
+        StreetModel findedStreet = await _streetRepository.FindById(id);
+        if (findedStreet == null) 
+        {
+            throw new Exception("rua não encontrada");
+        }
+
+        StreetModel deletedStreet = await _streetRepository.Delete(findedStreet);
+        return deletedStreet;
     }
 }

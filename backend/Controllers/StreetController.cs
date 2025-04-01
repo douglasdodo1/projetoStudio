@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 
 [ApiController]
-[Route("street")]
+[Route("Street")]
 public class StreetController : ControllerBase{
 
     private readonly StreetService _streetService;
@@ -10,27 +10,33 @@ public class StreetController : ControllerBase{
         _streetService = streetService;
     }
     
-    [HttpPost("add")]
-    public async Task<IActionResult> add([FromBody] StreetModel street){
+    [HttpPost]
+    public async Task<IActionResult> Add([FromBody] StreetModel street){
         if (street == null){
             return BadRequest("Rua não fornecida");
         }
 
-        StreetModel streetReturned = await _streetService.AddStreet(street);
+        StreetModel streetReturned = await _streetService.Add(street);
         return Ok(streetReturned);
     }
 
-    [HttpPost("get/{id}")]
-    public async Task<IActionResult> get(int id){
+    [HttpGet("{id}")]
+    public async Task<IActionResult> Get(int id){
         if (id <= 0){
             return BadRequest("ID inválido");
         }
-        StreetModel street = await _streetService.FindStreetById(id);
+        StreetModel street = await _streetService.FindById(id);
         return Ok(street);
     }
 
-    [HttpPut("put/{id}")]
-    public async Task<IActionResult> put(int id, [FromBody] StreetModel streetToUpdate){
+    [HttpGet]
+    public async Task<IActionResult> GetAll(){
+        List<StreetModel> addressList = await _streetService.FindAll();
+        return Ok(addressList);
+    }
+
+    [HttpPut("{id}")]
+    public async Task<IActionResult> Put(int id, [FromBody] StreetModel streetToUpdate){
         if (id <= 0) {
             return BadRequest("ID inválido");
         }
@@ -39,17 +45,17 @@ public class StreetController : ControllerBase{
         }
 
 
-        StreetModel updatedStreet = await _streetService.UpdateStreet(id, streetToUpdate);
+        StreetModel updatedStreet = await _streetService.Update(id, streetToUpdate);
         return Ok(updatedStreet);
     }
 
-    [HttpDelete("delete")]
-    public async Task<IActionResult> delete(int id){
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> Delete(int id){
         if (id <= 0) {
             return BadRequest("ID inválido");
         }
 
-        StreetModel deletedStreet = await _streetService.DeleteStreet(id);
+        StreetModel deletedStreet = await _streetService.Delete(id);
         return Ok(deletedStreet);
     }
 }

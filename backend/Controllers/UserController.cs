@@ -2,7 +2,7 @@ using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 
 [ApiController]
-[Route("user")]
+[Route("User")]
 public class UsuarioController : ControllerBase {
 
     private readonly IValidator<UserModel> _validator;
@@ -13,17 +13,17 @@ public class UsuarioController : ControllerBase {
         _usuarioService = usuarioService?? throw new ArgumentNullException(nameof(usuarioService));
     }
 
-    [HttpPost("add")]
+    [HttpPost]
     public async Task<IActionResult> Add([FromBody] UserModel usuario){
         var resultadoValidacao = _validator.Validate(usuario);
         if(!resultadoValidacao.IsValid){
             return BadRequest(resultadoValidacao.Errors.Select(e => new { e.PropertyName, e.ErrorMessage }));
         }
-            UserModel result = await _usuarioService.addUser(usuario);
+            UserModel result = await _usuarioService.Add(usuario);
             return Ok(result);
     }
 
-    [HttpGet("get/{cpf}")]
+    [HttpGet("{cpf}")]
     public IActionResult Get(string cpf){
         if(string.IsNullOrEmpty(cpf)){
             return BadRequest("CPF é obrigatório.");
@@ -32,11 +32,17 @@ public class UsuarioController : ControllerBase {
             return BadRequest("CPF inválido.");
         }
 
-        var usuario = _usuarioService.findUserByCpf(cpf);
+        var usuario = _usuarioService.FindByCpf(cpf);
         return Ok(usuario);
     }
 
-    [HttpPut("address/{cpf}")]
+    [HttpGet]
+    public async Task<IActionResult> GetAll(){
+        List<UserModel> userList = await _usuarioService.FindAll(); 
+        return Ok(userList);
+    }
+
+    [HttpPut("{cpf}")]
     public async Task<IActionResult> Update(string cpf, [FromBody] UserModel usuario){
         var resultadoValidacao = _validator.Validate(usuario);
 
@@ -47,17 +53,17 @@ public class UsuarioController : ControllerBase {
             return BadRequest("informações inválidas");
         }
 
-        UserModel updatedUser = await _usuarioService.updateUser(cpf, usuario);
+        UserModel updatedUser = await _usuarioService.Update(cpf, usuario);
         return Ok(updatedUser);
     }
 
-    [HttpDelete("delete/{cpf}")]
+    [HttpDelete("{cpf}")]
     public async Task<IActionResult> Delete(string cpf){
         if (cpf.Length != 11){
             return BadRequest("Cpf inválido");
         }
 
-        UserModel deletedUser = await _usuarioService.deleteUser(cpf);
+        UserModel deletedUser = await _usuarioService.Delete(cpf);
         return Ok(deletedUser);
     }
 }

@@ -1,32 +1,43 @@
 
-public class StreetRepository : IStreetRepository
-{
-    public Task<StreetModel> AddStreet(StreetModel street)
+using Microsoft.EntityFrameworkCore;
+
+public class StreetRepository : IStreetRepository{
+
+    private readonly Db _db;
+
+    public StreetRepository(Db Db){
+        _db = Db;
+    }
+    public async Task<StreetModel> Add(StreetModel street)
     {
-        throw new NotImplementedException();
+        await _db.AddAsync(street);
+        await _db.SaveChangesAsync();
+        return street;
     }
 
-    public Task<StreetModel> FindStreetById(int id)
+    public async Task<StreetModel> FindById(int id)
     {
-        throw new NotImplementedException();
+        StreetModel street = await _db.Street.FindAsync(id);
+        return street;
     }
 
-    public Task<List<StreetModel>> FindAllStreet()
+    public async Task<List<StreetModel>> FindAll()
     {
-        throw new NotImplementedException();
+        List<StreetModel> streetList = await _db.Street.ToListAsync();
+        return streetList;
     }
     
-    public Task<StreetModel> UpdateStreet(StreetModel streetToUpdate, StreetModel findedStreet)
+    public async Task<StreetModel> Update(StreetModel streetToUpdate, StreetModel findedStreet)
     {
-        throw new NotImplementedException();
+        findedStreet.Name = streetToUpdate.Name;
+        await _db.SaveChangesAsync();
+        return streetToUpdate;
     }
 
-    public Task<StreetModel> deleteStreet(StreetModel street)
+    public async Task<StreetModel> Delete(StreetModel street)
     {
-        throw new NotImplementedException();
+        _db.Remove(street);
+        await _db.SaveChangesAsync();
+        return street;
     }
-    
-
-    
-    
 }
