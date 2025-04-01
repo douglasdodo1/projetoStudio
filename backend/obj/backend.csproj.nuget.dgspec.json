@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Douglas\\Desktop\\projects\\projetoStudio\\backend\\backend.csproj": {}
+    "/home/douglas/Desktop/projetoStudio/backend/backend.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Douglas\\Desktop\\projects\\projetoStudio\\backend\\backend.csproj": {
+    "/home/douglas/Desktop/projetoStudio/backend/backend.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Douglas\\Desktop\\projects\\projetoStudio\\backend\\backend.csproj",
+        "projectUniqueName": "/home/douglas/Desktop/projetoStudio/backend/backend.csproj",
         "projectName": "backend",
-        "projectPath": "C:\\Users\\Douglas\\Desktop\\projects\\projetoStudio\\backend\\backend.csproj",
-        "packagesPath": "C:\\Users\\Douglas\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Douglas\\Desktop\\projects\\projetoStudio\\backend\\obj\\",
+        "projectPath": "/home/douglas/Desktop/projetoStudio/backend/backend.csproj",
+        "packagesPath": "/home/douglas/.nuget/packages/",
+        "outputPath": "/home/douglas/Desktop/projetoStudio/backend/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\Douglas\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "/home/douglas/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net9.0"
@@ -78,7 +78,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.201/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/home/douglas/.dotnet/sdk/9.0.201/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

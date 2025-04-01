@@ -6,21 +6,21 @@ using Microsoft.AspNetCore.Mvc;
 public class UsuarioController : ControllerBase {
 
     private readonly IValidator<UserModel> _validator;
-    private  UserService _usuarioService;
+    private  UserService _userService;
 
     public UsuarioController (IValidator<UserModel> validador, UserService usuarioService){
         _validator = validador?? throw new ArgumentNullException(nameof(validador));
-        _usuarioService = usuarioService?? throw new ArgumentNullException(nameof(usuarioService));
+        _userService = usuarioService?? throw new ArgumentNullException(nameof(usuarioService));
     }
 
     [HttpPost]
-    public async Task<IActionResult> Add([FromBody] UserModel usuario){
-        var resultadoValidacao = _validator.Validate(usuario);
+    public async Task<IActionResult> Add([FromBody] UserModel newUser){
+        var resultadoValidacao = _validator.Validate(newUser);
         if(!resultadoValidacao.IsValid){
             return BadRequest(resultadoValidacao.Errors.Select(e => new { e.PropertyName, e.ErrorMessage }));
         }
-            UserModel result = await _usuarioService.Add(usuario);
-            return Ok(result);
+            UserModel createdUser = await _userService.Add(newUser);
+            return Created(nameof(Add),createdUser);
     }
 
     [HttpGet("{cpf}")]
@@ -32,13 +32,13 @@ public class UsuarioController : ControllerBase {
             return BadRequest("CPF inválido.");
         }
 
-        var usuario = _usuarioService.FindByCpf(cpf);
+        var usuario = _userService.FindByCpf(cpf);
         return Ok(usuario);
     }
 
     [HttpGet]
     public async Task<IActionResult> GetAll(){
-        List<UserModel> userList = await _usuarioService.FindAll(); 
+        List<UserModel> userList = await _userService.FindAll(); 
         return Ok(userList);
     }
 
@@ -53,7 +53,7 @@ public class UsuarioController : ControllerBase {
             return BadRequest("informações inválidas");
         }
 
-        UserModel updatedUser = await _usuarioService.Update(cpf, usuario);
+        UserModel updatedUser = await _userService.Update(cpf, usuario);
         return Ok(updatedUser);
     }
 
@@ -63,7 +63,7 @@ public class UsuarioController : ControllerBase {
             return BadRequest("Cpf inválido");
         }
 
-        UserModel deletedUser = await _usuarioService.Delete(cpf);
+        UserModel deletedUser = await _userService.Delete(cpf);
         return Ok(deletedUser);
     }
 }

@@ -7,6 +7,8 @@ var builder = WebApplication.CreateBuilder(args);
 var typeDataBase = builder.Configuration["typeDataBase"] ?? throw new Exception("typeDataBase not found in configuration");
 var connectionString = builder.Configuration.GetConnectionString(typeDataBase) ?? throw new Exception("Connection string not found");
 
+builder.Services.AddDbContext<Db>(options =>
+    options.UseNpgsql(connectionString));
 
 builder.Services.AddScoped<UserValidator>();
 builder.Services.AddScoped<UserService>();
@@ -14,12 +16,13 @@ builder.Services.AddScoped<UserRepository>();
 
 builder.Services.AddValidatorsFromAssemblyContaining<UserValidator>();
 
-builder.Services.AddDbContext<Db>(options =>
-    options.UseNpgsql(connectionString));
+
 
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
+app.UseMiddleware<ExceptionMiddleware>();
+
 
 if (!app.Environment.IsDevelopment())
 {

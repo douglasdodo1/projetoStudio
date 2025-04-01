@@ -13,6 +13,10 @@ public class UserService : IUserService{
         }
 
         UserModel result = await _userRepository.Add(user);
+        if (result == null){
+            throw new Exception("Erro ao cadastrar usuario");
+        }
+        
         return result;
     }
 

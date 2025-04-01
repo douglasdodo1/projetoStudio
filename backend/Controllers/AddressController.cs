@@ -19,8 +19,8 @@ public class AddressController :ControllerBase{
             return BadRequest(validationResult.Errors.Select(e => new {e.PropertyName, e.ErrorMessage}));
         }
         
-        AddressModel address = await _addressService.AddAddress(newAdress);
-        return Ok(address);
+        AddressModel createdAddress = await _addressService.AddAddress(newAdress);
+        return Created(nameof(Add), createdAddress);
     }
 
     [HttpGet("{id}")]

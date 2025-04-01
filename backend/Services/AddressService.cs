@@ -8,15 +8,19 @@ public class AddressService : IAdressService{
         _addressRepository = addressRepository;
     }
 
-    public async Task<AddressModel> AddAddress(AddressModel address)
+    public async Task<AddressModel> AddAddress(AddressModel newAddress)
     {
-        AddressModel findedAdress = await _addressRepository.FindById(address.Id);
+        AddressModel findedAdress = await _addressRepository.FindById(newAddress.Id);
         if (findedAdress != null){
             throw new Exception("endereço já cadastrado");
         }
 
-        AddressModel newAddress = await _addressRepository.Add(address);
-        return newAddress;
+        AddressModel addedAddress = await _addressRepository.Add(newAddress);
+        if (addedAddress == null){
+            throw new Exception("erro ao cadastrar endereço");
+        }
+
+        return addedAddress;
     }
 
     public async Task<AddressModel> FindAddressById(int id)
