@@ -4,31 +4,39 @@ using Microsoft.EntityFrameworkCore;
 public class NeighborhoodRepository : INeighborhoodRepository{
 
     private readonly Db _db;
-    public Task<NeighborhoodModel> AddNeighborhood(NeighborhoodModel neighborhood)
+
+    public NeighborhoodRepository(Db db){
+        _db = db;
+    }
+    public async Task<NeighborhoodModel> Add(NeighborhoodModel neighborhood)
     {
-        throw new NotImplementedException();
+        await _db.AddAsync(neighborhood);
+        await _db.SaveChangesAsync();
+        return neighborhood;
     }
 
-    public async Task<NeighborhoodModel> FindNeighborhoodById(int id)
+    public async Task<NeighborhoodModel> FindById(int id)
     {
         NeighborhoodModel neighborhood = await _db.Neighborhood.FindAsync(id);
         return neighborhood;
     }
 
-    public async Task<List<NeighborhoodModel>> FindAllNeighborhood()
+    public async Task<List<NeighborhoodModel>> FindAll()
     {
         return await _db.Neighborhood.ToListAsync();
     }
 
-    public async Task<NeighborhoodModel> UpdateNeighborhoor(NeighborhoodModel neighborhoodToUpdate, NeighborhoodModel findedNeighborhood)
+    public async Task<NeighborhoodModel> Update(NeighborhoodModel neighborhoodToUpdate, NeighborhoodModel findedNeighborhood)
     {
         findedNeighborhood.Name = neighborhoodToUpdate.Name;
         await _db.SaveChangesAsync();
         return neighborhoodToUpdate;
     }
 
-    public Task<NeighborhoodModel> DeleteNeighborhood(NeighborhoodModel neighborhood)
+    public async Task<NeighborhoodModel> Delete(NeighborhoodModel neighborhood)
     {
-        throw new NotImplementedException();
+        _db.Remove(neighborhood);
+        await _db.SaveChangesAsync();
+        return neighborhood;
     }
 }

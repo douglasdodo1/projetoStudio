@@ -8,7 +8,7 @@ public class UserRepository : IUserRepository{
         _db = db;
     }
 
-    public async Task<UserModel> AddUser(UserModel user) {
+    public async Task<UserModel> Add(UserModel user) {
         try
         {
             await _db.AddAsync(user);
@@ -21,7 +21,7 @@ public class UserRepository : IUserRepository{
         }
     }
 
-    public async Task<UserModel> FindUserByCpf(string cpf){
+    public async Task<UserModel> FindByCpf(string cpf){
         try{
             return await _db.User.FirstOrDefaultAsync(u => u.Cpf == cpf);
         }
@@ -30,7 +30,12 @@ public class UserRepository : IUserRepository{
         }
     }
 
-    public async Task<UserModel> UpdatedUser(UserModel userToUpdate, UserModel findedUser)
+    public async Task<List<UserModel>> FindAll(){
+        List<UserModel> userList = await _db.User.ToListAsync();
+        return userList;
+    }
+
+    public async Task<UserModel> Update(UserModel userToUpdate, UserModel findedUser)
     {
         findedUser.Name = userToUpdate.Name;
         findedUser.Password = userToUpdate.Password;
@@ -41,7 +46,7 @@ public class UserRepository : IUserRepository{
         return userToUpdate;
     }
 
-    public async Task<UserModel> DeleteUser(UserModel userToDelete){
+    public async Task<UserModel> Delete(UserModel userToDelete){
         _db.User.Remove(userToDelete) ;
         await _db.SaveChangesAsync();
         return userToDelete;

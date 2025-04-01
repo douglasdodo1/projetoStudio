@@ -2892,19 +2892,19 @@
     ]
   },
   "packageFolders": {
-    "/home/douglas/.nuget/packages/": {}
+    "C:\\Users\\Douglas\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/home/douglas/Desktop/projetoStudio/backend/backend.csproj",
+      "projectUniqueName": "C:\\Users\\Douglas\\Desktop\\projects\\projetoStudio\\backend\\backend.csproj",
       "projectName": "backend",
-      "projectPath": "/home/douglas/Desktop/projetoStudio/backend/backend.csproj",
-      "packagesPath": "/home/douglas/.nuget/packages/",
-      "outputPath": "/home/douglas/Desktop/projetoStudio/backend/obj/",
+      "projectPath": "C:\\Users\\Douglas\\Desktop\\projects\\projetoStudio\\backend\\backend.csproj",
+      "packagesPath": "C:\\Users\\Douglas\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Douglas\\Desktop\\projects\\projetoStudio\\backend\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "/home/douglas/.nuget/NuGet/NuGet.Config"
+        "C:\\Users\\Douglas\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net9.0"
@@ -2968,7 +2968,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/home/douglas/.dotnet/sdk/9.0.201/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.201/PortableRuntimeIdentifierGraph.json"
       }
     }
   }
