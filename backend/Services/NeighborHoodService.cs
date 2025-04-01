@@ -16,6 +16,10 @@ public class NeighborhoodService : IneighborhoodService{
         }
 
         NeighborhoodModel addedNeighborhood = await _neighborhoodRepository.Add(neighborhood);
+        if (addedNeighborhood == null){
+            throw new Exception("erro ao cadastrar serviço");
+        }
+        
         return addedNeighborhood;
     }
     public async Task<NeighborhoodModel> FindById(int id)

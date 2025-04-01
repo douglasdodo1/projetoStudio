@@ -5,13 +5,16 @@ public class AddressRepository : IAdressRepository{
 
     private readonly Db _db;
 
+    public AddressRepository(Db db){
+        _db = db;
+    }
+
     public async Task<AddressModel> Add(AddressModel address)
     {
         await _db.AddAsync(address);
         await _db.SaveChangesAsync();
         return address;
     }
-
     
     public async Task<AddressModel> FindById(int id)
     {

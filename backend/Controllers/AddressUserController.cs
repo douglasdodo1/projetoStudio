@@ -7,13 +7,13 @@ public class AddressUserController : ControllerBase{
     private readonly AddressUserService _addressUserService;
 
     [HttpPost]
-    public async Task<IActionResult> Add([FromBody] AddressUserModel addressUser){
-        if (addressUser == null){
+    public async Task<IActionResult> Add([FromBody] AddressUserModel newAddressUser){
+        if (newAddressUser == null){
             return BadRequest("endereço de usuario invalido");
         }
         
-        AddressUserModel newAddressUser = await _addressUserService.Add(addressUser);
-        return Ok(newAddressUser);
+        AddressUserModel createdAddressUser = await _addressUserService.Add(newAddressUser);
+        return Created(nameof(Add), createdAddressUser);
     }
 
     [HttpGet("{id}")]

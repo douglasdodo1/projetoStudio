@@ -13,8 +13,13 @@ public class StreetService : IStreetService{
         if (streetFinded != null){
             throw new Exception("Rua já cadastrada");
         }
-        StreetModel streetModel = await _streetRepository.Add(street);
-        return streetModel;
+        
+        StreetModel addedStreet = await _streetRepository.Add(street);
+        if (addedStreet == null){
+            throw new Exception("Erro ao cadastrar rua");
+        }
+
+        return addedStreet;
     }
 
     public async Task<List<StreetModel>> FindAll()

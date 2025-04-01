@@ -11,13 +11,13 @@ public class StreetController : ControllerBase{
     }
     
     [HttpPost]
-    public async Task<IActionResult> Add([FromBody] StreetModel street){
-        if (street == null){
+    public async Task<IActionResult> Add([FromBody] StreetModel newStreet){
+        if (newStreet == null){
             return BadRequest("Rua não fornecida");
         }
 
-        StreetModel streetReturned = await _streetService.Add(street);
-        return Ok(streetReturned);
+        StreetModel createdStreet = await _streetService.Add(newStreet);
+        return Created(nameof(Add),createdStreet);
     }
 
     [HttpGet("{id}")]

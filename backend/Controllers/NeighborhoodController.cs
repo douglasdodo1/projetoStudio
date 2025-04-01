@@ -10,13 +10,13 @@ public class NeighborhoodController : ControllerBase{
     }
 
     [HttpPost]
-    public async Task<IActionResult> Post([FromBody] NeighborhoodModel neighborhood){
+    public async Task<IActionResult> Add([FromBody] NeighborhoodModel neighborhood){
         if (neighborhood == null){
             return BadRequest("neighborhood não fornecida");
         }
 
         NeighborhoodModel neighborhoodReturned = await _neighborHoodService.Add(neighborhood);
-        return Ok(neighborhoodReturned);
+        return Created(nameof(Add),neighborhoodReturned);
     }
 
     [HttpGet("{id}")]
