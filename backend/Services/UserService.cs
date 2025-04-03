@@ -1,22 +1,28 @@
+using FluentValidation;
 
 public class UserService : IUserService{
 
     private readonly UserRepository _userRepository;
+    private readonly IValidator<UserModel> _validator;
 
-    public UserService(UserRepository userRepository){
-        _userRepository = userRepository;
+    public UserService(IValidator<UserModel> validador, UserRepository userRepository){
+        _userRepository = userRepository ;
+        _validator = validador;
     }
     public async Task<UserModel> Add(UserModel user){
+        var validationResult = _validator.Validate(user);
+        var erros = string.Join("; ", validationResult.Errors.Select(e => e.ErrorMessage));
+
+        if(!validationResult.IsValid){
+            throw new ArgumentException(erros);
+        }
+
         UserModel FindedUser = await _userRepository.FindByCpf(user.Cpf);
         if(FindedUser != null){
             throw new InvalidOperationException("Usuário já cadastrado.");
         }
 
         UserModel result = await _userRepository.Add(user);
-        if (result == null){
-            throw new InvalidOperationException("Erro ao cadastrar usuario");
-        }
-        
         return result;
     }
 
@@ -35,6 +41,11 @@ public class UserService : IUserService{
     }
 
     public async Task<UserModel> Update(string cpf, UserModel userToUpdate){
+        var resultadoValidacao = _validator.Validate(userToUpdate);
+        if (!resultadoValidacao.IsValid){
+            throw new ArgumentException($"{resultadoValidacao.Errors} argumentos inválidos");
+        }
+
         UserModel findedUser = await _userRepository.FindByCpf(cpf);
         if(findedUser == null){
             throw new KeyNotFoundException("Usuário não encontrado.");
@@ -55,12 +66,6 @@ public class UserService : IUserService{
         }
 
         UserModel deletedUser = await _userRepository.Delete(userToDelete);
-        if(deletedUser == null){
-            throw new InvalidOperationException("erro ao deletar usuario");
-
-        }
         return deletedUser;
     }
-
-    
 }

@@ -17,17 +17,13 @@ public class AddressService : IAdressService{
         }
 
         AddressModel addedAddress = await _addressRepository.Add(newAddress);
-        if (addedAddress == null){
-            throw new InvalidOperationException("erro ao cadastrar endereço");
-        }
         return addedAddress;
     }
 
     public async Task<AddressModel> FindAddressById(int id)
     {
         AddressModel address = await _addressRepository.FindById(id);
-        if (address == null)
-        {
+        if (address == null){
             throw new KeyNotFoundException("endereço não encontrado");
         }
 
@@ -62,9 +58,6 @@ public class AddressService : IAdressService{
         }
 
         AddressModel addressDeleted = await _addressRepository.Delete(addressToDelete);
-        if (addressDeleted == null){
-            throw new InvalidOperationException("Erro ao deletar endereço");
-        }
         return addressDeleted;
     }
 }

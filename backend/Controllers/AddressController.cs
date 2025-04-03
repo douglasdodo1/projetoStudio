@@ -25,10 +25,6 @@ public class AddressController :ControllerBase{
 
     [HttpGet("{id}")]
     public async Task<IActionResult> Get(int id){
-        if (id <= 0){
-            return BadRequest("Id inválido");
-        }
-
         AddressModel address = await _addressService.FindAddressById(id);
         return Ok(address);
     }
@@ -41,9 +37,7 @@ public class AddressController :ControllerBase{
 
     [HttpPut("{id}")]
     public async Task<IActionResult> Put(int id, [FromBody] AddressModel addressToUpdate){
-        if (id <= 0){
-            return BadRequest("id inválido");
-        }else if (addressToUpdate == null){
+        if (addressToUpdate == null){
             return BadRequest("alterações vazias");
         }
 
@@ -53,10 +47,6 @@ public class AddressController :ControllerBase{
 
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(int id){
-        if (id <= 0){
-            return BadRequest("id inválido");
-        }
-
         AddressModel deletedAddress = await _addressService.DeleteAddress(id);
         return Ok(deletedAddress);
     }

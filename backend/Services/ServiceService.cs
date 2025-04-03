@@ -19,9 +19,6 @@ public class ServiceService : IServiceService
         }
 
         ServiceModel addedService = await _serviceRepository.Add(service);
-        if (addedService == null){
-            throw new InvalidOperationException("erro ao adicionar serviço");
-        }
         return addedService;
     }
 
