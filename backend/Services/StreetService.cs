@@ -1,4 +1,6 @@
 
+using System.ComponentModel;
+
 public class StreetService : IStreetService{
 
     private readonly StreetRepository _streetRepository;
@@ -11,12 +13,12 @@ public class StreetService : IStreetService{
     {
         StreetModel streetFinded = await _streetRepository.FindById(street.Id);
         if (streetFinded != null){
-            throw new Exception("Rua já cadastrada");
+            throw new InvalidOperationException("Rua já cadastrada");
         }
         
         StreetModel addedStreet = await _streetRepository.Add(street);
         if (addedStreet == null){
-            throw new Exception("Erro ao cadastrar rua");
+            throw new InvalidOperationException("Erro ao cadastrar rua");
         }
 
         return addedStreet;
@@ -32,7 +34,7 @@ public class StreetService : IStreetService{
     {
         StreetModel street = await _streetRepository.FindById(id);
         if (street == null){
-            throw new Exception("Rua não encontrada");
+            throw new InvalidOperationException("Rua não encontrada");
         }
         return street;
         
@@ -43,11 +45,14 @@ public class StreetService : IStreetService{
         StreetModel findedStreet = await _streetRepository.FindById(id);
         if (findedStreet == null) 
         {
-            throw new Exception("rua não encontrada");
+            throw new KeyNotFoundException("rua não encontrada");
         }
 
         StreetModel UpdatedStreet = await _streetRepository.Update(streetToUpdate, findedStreet);
-        return UpdatedStreet;        
+        if (UpdatedStreet == null){
+            throw new InvalidOperationException("erro ao atualizar rua");
+        }
+        return UpdatedStreet;
     }
 
     public async Task<StreetModel> Delete(int id)
@@ -55,10 +60,13 @@ public class StreetService : IStreetService{
         StreetModel findedStreet = await _streetRepository.FindById(id);
         if (findedStreet == null) 
         {
-            throw new Exception("rua não encontrada");
+            throw new KeyNotFoundException("rua não encontrada");
         }
 
         StreetModel deletedStreet = await _streetRepository.Delete(findedStreet);
+        if(deletedStreet == null){
+            throw new InvalidOperationException("erro ao deletar rua");
+        }
         return deletedStreet;
     }
 }

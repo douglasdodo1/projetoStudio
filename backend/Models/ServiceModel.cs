@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 public class ServiceModel {
 
@@ -15,4 +16,8 @@ public class ServiceModel {
         Value = value;
     }
 
+    public static implicit operator ServiceModel(EntityEntry<ServiceModel> v)
+    {
+        throw new NotImplementedException();
+    }
 }

@@ -9,15 +9,14 @@ public class NeighborhoodService : IneighborhoodService{
         _neighborhoodRepository = neighborhoodRepository;
     }
     public async Task<NeighborhoodModel> Add([FromBody] NeighborhoodModel neighborhood){
-        int id = neighborhood.Id;
-        NeighborhoodModel neighborhoodReturned = await _neighborhoodRepository.FindById(id);
+        NeighborhoodModel neighborhoodReturned = await _neighborhoodRepository.FindById(neighborhood.Id);
         if (neighborhoodReturned != null){
-             throw new Exception("Bairro já cadastrado");
+             throw new KeyNotFoundException("Bairro já cadastrado");
         }
 
         NeighborhoodModel addedNeighborhood = await _neighborhoodRepository.Add(neighborhood);
         if (addedNeighborhood == null){
-            throw new Exception("erro ao cadastrar serviço");
+            throw new InvalidOperationException("erro ao cadastrar serviço");
         }
         
         return addedNeighborhood;
@@ -27,7 +26,7 @@ public class NeighborhoodService : IneighborhoodService{
         NeighborhoodModel neighborhood = await _neighborhoodRepository.FindById(id);
         if (neighborhood == null)
         {
-            throw new Exception("Bairro não encontrado");
+            throw new KeyNotFoundException("Bairro não encontrado");
         }
         return neighborhood;
     }
@@ -41,10 +40,13 @@ public class NeighborhoodService : IneighborhoodService{
     {
         NeighborhoodModel findedNeighborhood = await _neighborhoodRepository.FindById(id);
         if (findedNeighborhood == null){
-            throw new Exception("Bairro não encontrado");
+            throw new KeyNotFoundException("Bairro não encontrado");
         }
 
         NeighborhoodModel updatedNeighborhood = await _neighborhoodRepository.Update(neighborhoodToupdate, findedNeighborhood);
+        if (updatedNeighborhood == null){
+            throw new InvalidOperationException("erro ao atualizar bairro");
+        }
         return updatedNeighborhood;
     }
 
@@ -53,10 +55,13 @@ public class NeighborhoodService : IneighborhoodService{
         NeighborhoodModel neighborhoodToDelete = await _neighborhoodRepository.FindById(id);
         if (neighborhoodToDelete == null)
         {
-            throw new Exception("Bairro não encontrado");
+            throw new KeyNotFoundException("Bairro não encontrado");
         }
 
         NeighborhoodModel deletedNeighborhood = await _neighborhoodRepository.Delete(neighborhoodToDelete);
+        if (deletedNeighborhood == null){
+            throw new InvalidOperationException("Erro ao deletar bairro");
+        }
         return deletedNeighborhood;
 
     }

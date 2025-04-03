@@ -1,5 +1,6 @@
 
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 public class AddressService : IAdressService{
     private readonly AddressRepository _addressRepository;
@@ -12,14 +13,13 @@ public class AddressService : IAdressService{
     {
         AddressModel findedAdress = await _addressRepository.FindById(newAddress.Id);
         if (findedAdress != null){
-            throw new Exception("endereço já cadastrado");
+            throw new KeyNotFoundException("endereço já cadastrado");
         }
 
         AddressModel addedAddress = await _addressRepository.Add(newAddress);
         if (addedAddress == null){
-            throw new Exception("erro ao cadastrar endereço");
+            throw new InvalidOperationException("erro ao cadastrar endereço");
         }
-
         return addedAddress;
     }
 
@@ -28,7 +28,7 @@ public class AddressService : IAdressService{
         AddressModel address = await _addressRepository.FindById(id);
         if (address == null)
         {
-            throw new Exception("endereço não encontrado");
+            throw new KeyNotFoundException("endereço não encontrado");
         }
 
         return address;
@@ -44,10 +44,13 @@ public class AddressService : IAdressService{
     {
         AddressModel findedAddress = await _addressRepository.FindById(id);
         if (findedAddress == null){
-            throw new Exception("endereço não encontrado");
+            throw new KeyNotFoundException("endereço não encontrado");
         }
 
         AddressModel updatedAddress = await _addressRepository.Update(addressToUpdate, findedAddress);
+        if (updatedAddress == null){
+            throw new InvalidOperationException("Erro ao atualizar serviço");
+        }
         return updatedAddress;
     }
 
@@ -55,10 +58,13 @@ public class AddressService : IAdressService{
     {
         AddressModel addressToDelete = await _addressRepository.FindById(id);
         if(addressToDelete == null){
-            throw new Exception("Endereço não encontrado");
+            throw new KeyNotFoundException("Endereço não encontrado");
         }
 
         AddressModel addressDeleted = await _addressRepository.Delete(addressToDelete);
+        if (addressDeleted == null){
+            throw new InvalidOperationException("Erro ao deletar endereço");
+        }
         return addressDeleted;
     }
 }

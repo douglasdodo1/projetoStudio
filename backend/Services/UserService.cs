@@ -9,12 +9,12 @@ public class UserService : IUserService{
     public async Task<UserModel> Add(UserModel user){
         UserModel FindedUser = await _userRepository.FindByCpf(user.Cpf);
         if(FindedUser != null){
-            throw new Exception("Usuário já cadastrado.");
+            throw new InvalidOperationException("Usuário já cadastrado.");
         }
 
         UserModel result = await _userRepository.Add(user);
         if (result == null){
-            throw new Exception("Erro ao cadastrar usuario");
+            throw new InvalidOperationException("Erro ao cadastrar usuario");
         }
         
         return result;
@@ -23,7 +23,7 @@ public class UserService : IUserService{
     public async Task<UserModel> FindByCpf(string cpf){
         UserModel user = await _userRepository.FindByCpf(cpf);
         if(user == null){
-            throw new Exception("Usuário não encontrado.");
+            throw new KeyNotFoundException("Usuário não encontrado.");
         }
         return user;
     }
@@ -37,10 +37,13 @@ public class UserService : IUserService{
     public async Task<UserModel> Update(string cpf, UserModel userToUpdate){
         UserModel findedUser = await _userRepository.FindByCpf(cpf);
         if(findedUser == null){
-            throw new Exception("Usuário não encontrado.");
+            throw new KeyNotFoundException("Usuário não encontrado.");
         }
 
         UserModel updatedUser = await _userRepository.Update(userToUpdate,findedUser);
+        if(updatedUser == null){
+            throw new InvalidOperationException("erro ao atualizar usuario");
+        }
         return updatedUser;
     }
 
@@ -48,10 +51,14 @@ public class UserService : IUserService{
         UserModel userToDelete = await _userRepository.FindByCpf(cpf);
         if (userToDelete == null)
         {
-            throw new Exception("usuário não encontrado");
+            throw new KeyNotFoundException("usuário não encontrado");
         }
 
         UserModel deletedUser = await _userRepository.Delete(userToDelete);
+        if(deletedUser == null){
+            throw new InvalidOperationException("erro ao deletar usuario");
+
+        }
         return deletedUser;
     }
 

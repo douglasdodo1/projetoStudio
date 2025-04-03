@@ -1,28 +1,41 @@
 
 public class ServiceRepository : IServiceRepository
 {
-    public Task<ServiceModel> Add(ServiceModel service)
+    private readonly Db _db;
+
+    public ServiceRepository(Db db){
+        _db = db;
+    }
+    public async Task<ServiceModel> Add(ServiceModel service)
     {
-        throw new NotImplementedException();
+        ServiceModel serviceAdded = await _db.Service.AddAsync(service);
+        return serviceAdded;
     }
 
-    public Task<ServiceModel> Delete(ServiceModel serviceToDelete)
+    public async Task<ServiceModel> FindById(int id)
     {
-        throw new NotImplementedException();
+        ServiceModel serviceModel = await _db.Service.FindAsync(id);
+        return serviceModel;
     }
 
-    public Task<List<ServiceModel>> FindAll()
+    public async Task<List<ServiceModel>> FindAll()
     {
-        throw new NotImplementedException();
+        List<ServiceModel> serviceModel = _db.Service.ToList();
+        return serviceModel;
     }
 
-    public Task<ServiceModel> FindById(ServiceModel service)
+    public async Task<ServiceModel> Update(ServiceModel seriveToUpdate, ServiceModel findedService)
     {
-        throw new NotImplementedException();
+        findedService.Name = seriveToUpdate.Name;
+        findedService.Value = seriveToUpdate.Value;
+        await _db.SaveChangesAsync();
+        return seriveToUpdate;
     }
 
-    public Task<ServiceModel> Update(ServiceModel seriveToUpdate, ServiceModel findedService)
+    public async Task<ServiceModel> Delete(ServiceModel serviceToDelete)
     {
-        throw new NotImplementedException();
+        _db.Service.Remove(serviceToDelete);
+        await _db.SaveChangesAsync();
+        return serviceToDelete;
     }
 }

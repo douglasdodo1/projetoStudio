@@ -1,5 +1,6 @@
 
 using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.EntityFrameworkCore;
 
 public class ServiceService : IServiceService
 {
@@ -25,10 +26,6 @@ public class ServiceService : IServiceService
     }
 
     public async Task<ServiceModel> FindById(int id){
-        if (id <= 0){
-            throw new ArgumentOutOfRangeException(nameof(id), "O ID fornecido é inválido.");
-        }
-
         ServiceModel FindedService = await _serviceRepository.FindById(id);
         if (FindedService == null){
             throw new KeyNotFoundException("Serviço não encontrado");
@@ -36,18 +33,37 @@ public class ServiceService : IServiceService
         return FindedService;
     }
 
-    public Task<List<ServiceModel>> FindAll()
+    public async Task<List<ServiceModel>> FindAll()
     {
-        throw new NotImplementedException();
+        List<ServiceModel> serviceList = await _serviceRepository.FindAll();
+        return serviceList;
     }
 
-    public Task<ServiceModel> Update(int id, ServiceModel serviceToUpdate)
+    public async Task<ServiceModel> Update(int id, ServiceModel serviceToUpdate)
     {
-        throw new NotImplementedException();
+       ServiceModel findedService = await _serviceRepository.FindById(id);
+       if (findedService == null){
+        throw new KeyNotFoundException("serviço não encontrado");
+       }
+
+        ServiceModel updatedService = await _serviceRepository.Update(serviceToUpdate, findedService);
+        if (updatedService == null){
+            throw new DbUpdateException("erro ao atualizar serviço");
+        }
+        return updatedService;
     }
 
-    public Task<ServiceModel> Delete(int id)
+    public async Task<ServiceModel> Delete(int id)
     {
-        throw new NotImplementedException();
+        ServiceModel serviceToDelete = await _serviceRepository.FindById(id);
+        if (serviceToDelete == null){
+            throw new KeyNotFoundException("serviço não encontrado");
+        }
+
+        ServiceModel deletedService = await _serviceRepository.Delete(serviceToDelete);
+        if (deletedService == null){
+            throw new InvalidOperationException("erro ao deletar serviço");
+        }
+        return deletedService;
     }
 }
