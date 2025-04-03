@@ -21,10 +21,6 @@ public class NeighborhoodController : ControllerBase{
 
     [HttpGet("{id}")]
     public async Task<IActionResult> Get(int id){
-        if (id <= 0){
-            return BadRequest("id inválido");
-        }
-
         NeighborhoodModel neighborhood = await _neighborHoodService.FindById(id);
         return Ok(neighborhood);
     }
@@ -37,10 +33,7 @@ public class NeighborhoodController : ControllerBase{
 
     [HttpPut("{id}")]
     public async Task<IActionResult> put(int id, [FromBody] NeighborhoodModel neighborhood){
-        if (id  <= 0 ){
-            return BadRequest("id inválido ou não fornecido");
-        }
-        else if (neighborhood == null){
+        if (neighborhood == null){
             return BadRequest("neighborhood não fornecida");
         }
 
@@ -50,10 +43,6 @@ public class NeighborhoodController : ControllerBase{
 
     [HttpDelete("{id}")]
     public async Task<IActionResult> delete(int id){
-        if (id  <= 0 ){
-            return BadRequest("id inválido ou não fornecido");
-        }
-
         NeighborhoodModel deletedNeighborhood = await _neighborHoodService.Delete(id);
         return Ok(deletedNeighborhood);
     }

@@ -1,9 +1,28 @@
 
-public class SessionService : ISessionService
-{
-    public Task<SessionModel> Add(SessionModel session)
+public class SessionService : ISessionService{
+
+    private readonly SessionValidator _validator;
+    private readonly SessionRepository _sessionRepository;
+    public SessionService(SessionValidator validator, SessionRepository sessionRepository){
+        _validator = validator;
+        _sessionRepository = sessionRepository;
+    }
+
+    public async Task<SessionModel> Add(SessionModel session)
     {
-        throw new NotImplementedException();
+        var validationResult = _validator.Validate(session);
+        var erros = string.Join("; ", validationResult.Errors.Select(e => e.ErrorMessage));
+        if (!validationResult.IsValid){
+            throw new ArgumentException(erros);
+        }
+
+        SessionModel findedSessionModel = await _sessionRepository.FindById(session.Id);
+        if(findedSessionModel != null){
+            throw new InvalidOperationException("Sessão já existe");
+        }
+
+        SessionModel addedSession = await _sessionRepository.Add(session);
+        return addedSession;
     }
 
     public Task<SessionModel> FindById(int id)
@@ -21,7 +40,7 @@ public class SessionService : ISessionService
         throw new NotImplementedException();
     }
 
-    public Task<SessionModel> Delete(SessionModel sessionModel)
+    public Task<SessionModel> Delete(int id)
     {
         throw new NotImplementedException();
     }

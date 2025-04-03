@@ -17,10 +17,6 @@ public class StreetService : IStreetService{
         }
         
         StreetModel addedStreet = await _streetRepository.Add(street);
-        if (addedStreet == null){
-            throw new InvalidOperationException("Erro ao cadastrar rua");
-        }
-
         return addedStreet;
     }
 

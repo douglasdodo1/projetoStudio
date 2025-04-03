@@ -22,9 +22,6 @@ public class StreetController : ControllerBase{
 
     [HttpGet("{id}")]
     public async Task<IActionResult> Get(int id){
-        if (id <= 0){
-            return BadRequest("ID inválido");
-        }
         StreetModel street = await _streetService.FindById(id);
         return Ok(street);
     }
@@ -37,24 +34,15 @@ public class StreetController : ControllerBase{
 
     [HttpPut("{id}")]
     public async Task<IActionResult> Put(int id, [FromBody] StreetModel streetToUpdate){
-        if (id <= 0) {
-            return BadRequest("ID inválido");
-        }
-        else if (streetToUpdate == null){
+        if (streetToUpdate == null){
             return BadRequest("Rua não fornecida");
         }
-
-
         StreetModel updatedStreet = await _streetService.Update(id, streetToUpdate);
         return Ok(updatedStreet);
     }
 
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(int id){
-        if (id <= 0) {
-            return BadRequest("ID inválido");
-        }
-
         StreetModel deletedStreet = await _streetService.Delete(id);
         return Ok(deletedStreet);
     }

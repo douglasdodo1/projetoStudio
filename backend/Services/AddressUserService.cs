@@ -14,9 +14,6 @@ public class AddressUserService : IAddressUserService
         }
 
         AddressUserModel  newAddressUser = await _addressRepository.Add(addressUser);
-        if (newAddressUser != null){
-            throw new InvalidOperationException("Erro ao adicionar serviço de usuario");
-        }
         return newAddressUser;
 
     }
