@@ -10,10 +10,13 @@ public class AddressUserService : IAddressUserService
     {
         AddressUserModel findedAddressUser = await _addressRepository.FindById(addressUser.Id);
         if (findedAddressUser != null){
-            throw new Exception("endereço já cadastrado há um usuario");
+            throw new KeyNotFoundException("endereço já cadastrado há um usuario");
         }
 
         AddressUserModel  newAddressUser = await _addressRepository.Add(addressUser);
+        if (newAddressUser != null){
+            throw new InvalidOperationException("Erro ao adicionar serviço de usuario");
+        }
         return newAddressUser;
 
     }
@@ -22,7 +25,7 @@ public class AddressUserService : IAddressUserService
     {
         AddressUserModel addressUser = await _addressRepository.FindById(id);
         if (addressUser == null){
-            throw new Exception("Endereço de usuario não encontrado");
+            throw new KeyNotFoundException("Endereço de usuario não encontrado");
         }
 
         return addressUser;
@@ -38,10 +41,13 @@ public class AddressUserService : IAddressUserService
     {
         AddressUserModel findedAddressUser = await _addressRepository.FindById(id);
         if (findedAddressUser == null){
-            throw new Exception("Endereço de usuario não encontrado");
+            throw new KeyNotFoundException("Endereço de usuario não encontrado");
         }
 
         AddressUserModel addressUserUpdated = await _addressRepository.Update(addressUserToUpdate, findedAddressUser);
+        if (addressUserUpdated != null){
+            throw new InvalidOperationException("Erro ao atualizar endereço de usuario");
+        }
         return addressUserUpdated;
     }
 
@@ -49,10 +55,13 @@ public class AddressUserService : IAddressUserService
     {
        AddressUserModel findedAddressUser = await _addressRepository.FindById(id);
        if (findedAddressUser == null){
-            throw new Exception("Endereço de usuario não encontrado");
+            throw new KeyNotFoundException("Endereço de usuario não encontrado");
        }
 
        AddressUserModel addressUserRemoved = await _addressRepository.Remove(findedAddressUser);
+       if(addressUserRemoved != null){
+        throw new InvalidOperationException("Erro ao deletar endereço de usuario");
+       }
        return addressUserRemoved;
     }
 }

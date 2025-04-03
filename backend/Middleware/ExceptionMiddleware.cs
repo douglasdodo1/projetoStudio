@@ -16,19 +16,10 @@ public class ExceptionMiddleware  {
     public async Task Invoke(HttpContext context){
         try{
             await _next(context);
-        }catch(ArgumentOutOfRangeException exception){
-            _logger.LogError(exception, "Argumento inválido");
-            context.Response.StatusCode = 400;
-            await context.Response.WriteAsJsonAsync(new { message = "Argumento inválido" });
         }catch(KeyNotFoundException exception){
             _logger.LogError(exception, "Recurso não encontrado");
             context.Response.StatusCode = 404;
             await context.Response.WriteAsJsonAsync(new { message = "Recurso não encontrado" });
-        }
-        catch(DbUpdateException exception){
-             _logger.LogError(exception, "Erro de concorrência no banco de dados");
-            context.Response.StatusCode = 409;
-            await context.Response.WriteAsJsonAsync(new { message = "Erro de concorrência no banco de dados" });
         }
         catch(ValidationException exception){
             _logger.LogError(exception, "Erro de validação de dados");
@@ -52,7 +43,7 @@ public class ExceptionMiddleware  {
         }
         catch(InvalidOperationException exception){
             _logger.LogError(exception,"Operação inválida");
-            context.Response.StatusCode = 400;
+            context.Response.StatusCode = 500;
             await context.Response.WriteAsJsonAsync(new {message = "Operação inválida"});
         }
         catch(Exception exception){
