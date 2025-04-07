@@ -996,3 +996,11 @@ C:\Users\Douglas\Desktop\projects\projetoStudio\backend\obj\Debug\net9.0\refint\
 C:\Users\Douglas\Desktop\projects\projetoStudio\backend\obj\Debug\net9.0\backend.pdb
 C:\Users\Douglas\Desktop\projects\projetoStudio\backend\obj\Debug\net9.0\backend.genruntimeconfig.cache
 C:\Users\Douglas\Desktop\projects\projetoStudio\backend\obj\Debug\net9.0\ref\backend.dll
+C:\Users\Douglas\Desktop\projects\projetoStudio\backend\bin\Debug\net9.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\Douglas\Desktop\projects\projetoStudio\backend\bin\Debug\net9.0\Microsoft.IdentityModel.Abstractions.dll
+C:\Users\Douglas\Desktop\projects\projetoStudio\backend\bin\Debug\net9.0\Microsoft.IdentityModel.JsonWebTokens.dll
+C:\Users\Douglas\Desktop\projects\projetoStudio\backend\bin\Debug\net9.0\Microsoft.IdentityModel.Logging.dll
+C:\Users\Douglas\Desktop\projects\projetoStudio\backend\bin\Debug\net9.0\Microsoft.IdentityModel.Protocols.dll
+C:\Users\Douglas\Desktop\projects\projetoStudio\backend\bin\Debug\net9.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+C:\Users\Douglas\Desktop\projects\projetoStudio\backend\bin\Debug\net9.0\Microsoft.IdentityModel.Tokens.dll
+C:\Users\Douglas\Desktop\projects\projetoStudio\backend\bin\Debug\net9.0\System.IdentityModel.Tokens.Jwt.dll

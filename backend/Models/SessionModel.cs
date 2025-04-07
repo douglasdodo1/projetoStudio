@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 public class SessionModel
 {
@@ -22,4 +23,8 @@ public class SessionModel
         Time = hora;
     }
 
+    public static implicit operator SessionModel(EntityEntry<SessionModel> v)
+    {
+        throw new NotImplementedException();
+    }
 }
