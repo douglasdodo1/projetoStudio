@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 public class ServiceSessionModel{
 
@@ -15,4 +16,8 @@ public class ServiceSessionModel{
         IdServico = idServico;
     }
 
+    public static implicit operator ServiceSessionModel(EntityEntry<ServiceSessionModel> v)
+    {
+        throw new NotImplementedException();
+    }
 }

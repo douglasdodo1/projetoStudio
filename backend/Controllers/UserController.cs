@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 
@@ -23,15 +24,10 @@ public class UsuarioController : ControllerBase {
     }
 
     [HttpGet("{cpf}")]
-    public IActionResult Get(string cpf){
-        if(string.IsNullOrEmpty(cpf)){
-            return BadRequest("CPF é obrigatório.");
-        }
-        else if(cpf.Length != 11){
-            return BadRequest("CPF inválido.");
-        }
+    public async Task<IActionResult> Get(string cpf){
+        
 
-        var usuario = _userService.FindByCpf(cpf);
+        var usuario = await _userService.FindByCpf(cpf);
         return Ok(usuario);
     }
 

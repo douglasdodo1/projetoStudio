@@ -22,12 +22,7 @@ public class UserRepository : IUserRepository{
     }
 
     public async Task<UserModel> FindByCpf(string cpf){
-        try{
-            return await _db.User.FirstOrDefaultAsync(u => u.Cpf == cpf);
-        }
-        catch (Exception exception){
-            throw new Exception(exception.Message);
-        }
+        return await _db.User.FindAsync(cpf);
     }
 
     public async Task<List<UserModel>> FindAll(){

@@ -1,47 +1,81 @@
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
+
 
 public class SessionService : ISessionService{
 
     private readonly SessionValidator _validator;
     private readonly SessionRepository _sessionRepository;
-    public SessionService(SessionValidator validator, SessionRepository sessionRepository){
+    private readonly IHttpContextAccessor _httpContextAccessor;
+    public SessionService(SessionValidator validator, SessionRepository sessionRepository, IHttpContextAccessor httpContextAccessor){
         _validator = validator;
         _sessionRepository = sessionRepository;
+        _httpContextAccessor = httpContextAccessor;
     }
 
     public async Task<SessionModel> Add(SessionModel session)
     {
         var validationResult = _validator.Validate(session);
         var erros = string.Join("; ", validationResult.Errors.Select(e => e.ErrorMessage));
+
         if (!validationResult.IsValid){
             throw new ArgumentException(erros);
         }
+
+        Console.WriteLine("=========================================");
+        var cpf = _httpContextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.Name)?.Value;
+        Console.WriteLine(cpf);
+        session.Cpf = cpf;
 
         SessionModel findedSessionModel = await _sessionRepository.FindById(session.Id);
         if(findedSessionModel != null){
             throw new InvalidOperationException("Sessão já existe");
         }
-
         SessionModel addedSession = await _sessionRepository.Add(session);
         return addedSession;
     }
 
-    public Task<SessionModel> FindById(int id)
+    public async Task<SessionModel> FindById(int id)
     {
-        throw new NotImplementedException();
+        SessionModel session = await _sessionRepository.FindById(id);
+        if(session == null){
+            throw new InvalidOperationException("sessão não encontrada");
+        }
+        return session;
     }
 
-    public Task<List<SessionModel>> FindAll()
+    public async Task<List<SessionModel>> FindAll()
     {
-        throw new NotImplementedException();
+        Console.WriteLine("=========================================");
+        var cpf = _httpContextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.Name)?.Value;
+        Console.WriteLine(cpf);
+
+        if (cpf == null){
+            throw new InvalidOperationException("Usuário não autenticado");
+        }
+
+        List<SessionModel> sessionList = await _sessionRepository.FindAll(cpf);
+        return sessionList;
     }
     
-    public Task<SessionModel> Update(int id, SessionModel sessionModelToUpdate)
+    public async Task<SessionModel> Update(int id, SessionModel sessionModelToUpdate)
     {
-        throw new NotImplementedException();
+        SessionModel findedSession = await _sessionRepository.FindById(id);
+        if (findedSession == null){
+            throw new InvalidOperationException("sessão não encontrada");
+        }
+        SessionModel updatedSession = await _sessionRepository.Update(sessionModelToUpdate, findedSession);
+        return updatedSession;
     }
 
-    public Task<SessionModel> Delete(int id)
+    public async Task<SessionModel> Delete(int id)
     {
-        throw new NotImplementedException();
+        SessionModel sessionToDelete = await _sessionRepository.FindById(id);
+        if (sessionToDelete == null){
+            throw new InvalidOperationException("sessão não encontrada");
+        }
+
+        SessionModel deletedSession = await _sessionRepository.Delete(sessionToDelete);
+        return deletedSession;
     }
 }

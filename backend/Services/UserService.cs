@@ -27,10 +27,19 @@ public class UserService : IUserService{
     }
 
     public async Task<UserModel> FindByCpf(string cpf){
+        if(string.IsNullOrEmpty(cpf)){
+            throw new ArgumentException("cpf inválido");
+        }
+        else if(cpf.Length != 11){
+            throw new ArgumentException("cpf não possui 11 digitos");
+        }
+        Console.WriteLine("AQUI: ");
+
         UserModel user = await _userRepository.FindByCpf(cpf);
         if(user == null){
             throw new KeyNotFoundException("Usuário não encontrado.");
         }
+        
         return user;
     }
 

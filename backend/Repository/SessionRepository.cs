@@ -1,29 +1,53 @@
 
+using Microsoft.EntityFrameworkCore;
+
 public class SessionRepository : ISessionRepository
 {
-    public Task<SessionModel> Add(SessionModel session)
-    {
-        throw new NotImplementedException();
+    private readonly Db _db;
+
+    public SessionRepository(Db db){
+        _db = db;
     }
 
-    public Task<SessionModel> FindById(int id)
+    public async Task<SessionModel> Add(SessionModel session)
     {
-        throw new NotImplementedException();
+        SessionModel addedSession = await _db.Session.AddAsync(session);
+        await _db.SaveChangesAsync();
+        return addedSession;
     }
 
-    public Task<List<SessionModel>> FindAll()
+    public async Task<SessionModel> FindById(int id)
     {
-        throw new NotImplementedException();
+        SessionModel? session = await _db.Session.FindAsync(id);
+        if (session == null){
+            throw new KeyNotFoundException($"Session with ID {id} was not found.");
+        }
+        return session;
     }
 
-    public Task<SessionModel> Update(SessionModel sessionToUpdate, SessionModel findedSession)
+    public async Task<List<SessionModel>> FindAll(string cpf)
     {
-        throw new NotImplementedException();
+        List<SessionModel> sessionList = await _db.Session.Where(session => session.Cpf == cpf).ToListAsync();
+        return sessionList;
     }
 
-    public Task<SessionModel> Delete(SessionModel sessionToDelete)
+    public async Task<SessionModel> Update(SessionModel sessionToUpdate, SessionModel findedSession)
     {
-        throw new NotImplementedException();
+        findedSession.Cpf = sessionToUpdate.Cpf;
+        findedSession.State = sessionToUpdate.State;
+        findedSession.Value = sessionToUpdate.Value;
+        findedSession.Date = sessionToUpdate.Date;
+        findedSession.Time = sessionToUpdate.Time;
+
+        await _db.SaveChangesAsync();
+        return sessionToUpdate;
+    }
+
+    public async Task<SessionModel> Delete(SessionModel sessionToDelete)
+    {
+        _db.Session.Remove(sessionToDelete);
+        await _db.SaveChangesAsync();
+        return sessionToDelete;
     }
 
 }

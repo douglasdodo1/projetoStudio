@@ -6,19 +6,12 @@ using Microsoft.AspNetCore.Mvc;
 public class AddressController :ControllerBase{
 
     private AddressService _addressService;
-    private readonly IValidator<AddressModel> _validator;
-    public  AddressController(AddressService adressService, IValidator<AddressModel> validator){
+    public  AddressController(AddressService adressService){
         _addressService = adressService;
-        _validator = validator;
     }
 
     [HttpPost]
     public async Task<IActionResult> Add([FromBody] AddressModel newAdress){
-        var validationResult =  _validator.Validate(newAdress);
-        if (!validationResult.IsValid){
-            return BadRequest(validationResult.Errors.Select(e => new {e.PropertyName, e.ErrorMessage}));
-        }
-        
         AddressModel createdAddress = await _addressService.AddAddress(newAdress);
         return Created(nameof(Add), createdAddress);
     }

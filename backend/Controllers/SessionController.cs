@@ -1,9 +1,16 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
+[Authorize]
 [Controller]
 [Route("Session")]
 public class SessionController : ControllerBase{
     private readonly SessionService _sessionService;
+    private readonly IHttpContextAccessor _httpContextAccessor;
+    public SessionController(SessionService sessionService, IHttpContextAccessor httpContextAccessor){
+        _sessionService = sessionService;
+        _httpContextAccessor = httpContextAccessor;
+    }
 
     [HttpPost]
     public async Task<IActionResult> Add([FromBody] SessionModel newSession){
@@ -20,7 +27,7 @@ public class SessionController : ControllerBase{
         SessionModel session = await _sessionService.FindById(id);
         return Ok(session);
     }
-
+    
     [HttpGet]
     public async Task<IActionResult> GetAll(){
         List<SessionModel> sessionList = await _sessionService.FindAll();
