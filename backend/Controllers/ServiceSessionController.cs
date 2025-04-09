@@ -1,5 +1,7 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
+[Authorize]
 [Controller]
 [Route("ServiceSession")]
 public class ServiceSessionController : ControllerBase{

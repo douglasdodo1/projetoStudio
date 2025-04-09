@@ -1,6 +1,8 @@
 using FluentValidation;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
+[Authorize]
 [ApiController]
 [Route("Address")]
 public class AddressController :ControllerBase{
