@@ -1,37 +1,42 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using System.Threading.Tasks;
 using Microsoft.IdentityModel.Tokens;
 
 public class AuthService {
     private readonly IConfiguration _configuration;
     private readonly UserService _userService;
+    private PasswordHasher _passwordHasher;
 
-    public AuthService(IConfiguration configuration, UserService userService){
+    public AuthService(IConfiguration configuration, UserService userService, PasswordHasher passwordHasher) {
+        _passwordHasher = passwordHasher;
         _configuration = configuration;
         _userService = userService;
     }
 
-    public async Task<string> Login(string cpf, string password){
-        
-        if (string.IsNullOrEmpty(cpf)){
+    public async Task<string> Login(string cpf, string password) {
+
+        if (string.IsNullOrEmpty(cpf)) {
             throw new ArgumentException("cpf não fornecido");
-        }else if (cpf.Length != 11){
+        }
+        else if (cpf.Length != 11) {
             throw new ArgumentException("cpf não possui 11 digitos");
         }
 
-        if (string.IsNullOrEmpty(password)){
+        if (string.IsNullOrEmpty(password)) {
             throw new ArgumentException("senha não fornecida");
         }
 
         UserModel findedUser = await _userService.FindByCpf(cpf);
-        if (findedUser == null){
+        if (findedUser == null) {
             throw new KeyNotFoundException("Usuário não encontrado");
         }
-        if (findedUser.Password != password){
+
+        bool hashedPassoword = _passwordHasher.verifyPassword(password, findedUser.Password);
+        if (!hashedPassoword) {
             throw new UnauthorizedAccessException("Senha inválida");
         }
+
         var claims = new[]{
             new Claim(ClaimTypes.Name, cpf)
         };

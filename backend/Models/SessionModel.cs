@@ -2,8 +2,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 
-public class SessionModel
-{
+public class SessionModel {
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int Id { get; set; }
@@ -13,9 +12,8 @@ public class SessionModel
     public string Date { get; set; }
     public string Time { get; set; }
 
-    public SessionModel(){}
-    public SessionModel(string cpf, bool status, double valor, string tipo, string data, string hora)
-    {
+    public SessionModel() { }
+    public SessionModel(string cpf, bool status, double valor, string tipo, string data, string hora) {
         Cpf = cpf;
         State = status;
         Value = valor;
@@ -23,8 +21,7 @@ public class SessionModel
         Time = hora;
     }
 
-    public static implicit operator SessionModel(EntityEntry<SessionModel> v)
-    {
+    public static implicit operator SessionModel(EntityEntry<SessionModel> v) {
         throw new NotImplementedException();
     }
 }

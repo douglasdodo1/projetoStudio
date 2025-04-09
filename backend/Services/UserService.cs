@@ -11,7 +11,6 @@ public class UserService : IUserService{
         _userRepository = userRepository ;
         _validator = validador;
     }
-
    
     public async Task<UserModel> Add(UserModel user){
         var validationResult = _validator.Validate(user);
@@ -25,7 +24,6 @@ public class UserService : IUserService{
         if(FindedUser != null){
             throw new InvalidOperationException("Usuário já cadastrado.");
         }
-
        
         user.Password = _passwordHasher.HashPassword(user.Password, PasswordHasher.GenerateSalt());
 
@@ -40,7 +38,6 @@ public class UserService : IUserService{
         else if(cpf.Length != 11){
             throw new ArgumentException("cpf não possui 11 digitos");
         }
-        Console.WriteLine("AQUI: ");
 
         UserModel user = await _userRepository.FindByCpf(cpf);
         if(user == null){

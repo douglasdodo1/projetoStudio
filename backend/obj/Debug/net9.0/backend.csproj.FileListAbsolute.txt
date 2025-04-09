@@ -1004,3 +1004,7 @@ C:\Users\Douglas\Desktop\projects\projetoStudio\backend\bin\Debug\net9.0\Microso
 C:\Users\Douglas\Desktop\projects\projetoStudio\backend\bin\Debug\net9.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
 C:\Users\Douglas\Desktop\projects\projetoStudio\backend\bin\Debug\net9.0\Microsoft.IdentityModel.Tokens.dll
 C:\Users\Douglas\Desktop\projects\projetoStudio\backend\bin\Debug\net9.0\System.IdentityModel.Tokens.Jwt.dll
+C:\Users\Douglas\Desktop\projects\projetoStudio\backend\bin\Debug\net9.0\Isopoh.Cryptography.Argon2.dll
+C:\Users\Douglas\Desktop\projects\projetoStudio\backend\bin\Debug\net9.0\Isopoh.Cryptography.Blake2b.dll
+C:\Users\Douglas\Desktop\projects\projetoStudio\backend\bin\Debug\net9.0\Isopoh.Cryptography.SecureArray.dll
+C:\Users\Douglas\Desktop\projects\projetoStudio\backend\bin\Debug\net9.0\povoamento\session.json

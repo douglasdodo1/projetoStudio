@@ -4,4 +4,4 @@ public interface INeighborhoodRepository {
     Task<List<NeighborhoodModel>> FindAll();
     Task<NeighborhoodModel> Update(NeighborhoodModel neighborhoodToUpdate, NeighborhoodModel findedNeighborhood);
     Task<NeighborhoodModel> Delete(NeighborhoodModel neighborhood);
-    }
+}

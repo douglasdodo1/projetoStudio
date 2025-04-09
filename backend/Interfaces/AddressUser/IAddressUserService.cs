@@ -1,4 +1,4 @@
-public interface IAddressUserService{
+public interface IAddressUserService {
     Task<AddressUserModel> Add(AddressUserModel addressUser);
     Task<AddressUserModel> FindById(int id);
     Task<List<AddressUserModel>> FindAll();

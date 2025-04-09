@@ -1,8 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-public class StreetModel
-{
+public class StreetModel {
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int Id { get; set; }
@@ -10,8 +9,7 @@ public class StreetModel
 
     public StreetModel() { }
 
-    public StreetModel(string nome)
-    {
+    public StreetModel(string nome) {
         Name = nome;
     }
 }

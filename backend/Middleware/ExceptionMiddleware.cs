@@ -4,52 +4,59 @@ using System.Reflection;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.EntityFrameworkCore;
 
-public class ExceptionMiddleware  {
+public class ExceptionMiddleware {
     private readonly RequestDelegate _next;
     private readonly ILogger<ExceptionMiddleware> _logger;
 
-    public ExceptionMiddleware(RequestDelegate next, ILogger<ExceptionMiddleware> logger){
+    public ExceptionMiddleware(RequestDelegate next, ILogger<ExceptionMiddleware> logger) {
         _next = next;
         _logger = logger;
     }
 
-    public async Task Invoke(HttpContext context){
-        try{
+    public async Task Invoke(HttpContext context) {
+        try {
             await _next(context);
-        }catch(KeyNotFoundException exception){
+        }
+        catch (KeyNotFoundException exception) {
             _logger.LogError(exception, "Recurso não encontrado");
             context.Response.StatusCode = 404;
             await context.Response.WriteAsJsonAsync(new { message = "Recurso não encontrado" });
         }
-        catch(ValidationException exception){
+        catch (FormatException exception) {
+            _logger.LogError(exception, "Formato inválido");
+            context.Response.StatusCode = 400;
+            await context.Response.WriteAsJsonAsync(new { message = "Formato inválido" });
+        }
+
+        catch (ValidationException exception) {
             _logger.LogError(exception, "Erro de validação de dados");
             context.Response.StatusCode = 400;
-            await context.Response.WriteAsJsonAsync(new {message = "dados inválidos"});
+            await context.Response.WriteAsJsonAsync(new { message = "dados inválidos" });
         }
-        catch(UnauthorizedAccessException exception){
-            _logger.LogError(exception,"Acesso não autorizado");
+        catch (UnauthorizedAccessException exception) {
+            _logger.LogError(exception, "Acesso não autorizado");
             context.Response.StatusCode = 401;
-            await context.Response.WriteAsJsonAsync(new {message = "Acesso não autorizado"});
+            await context.Response.WriteAsJsonAsync(new { message = "Acesso não autorizado" });
         }
-        catch(ArgumentNullException exception){
+        catch (ArgumentNullException exception) {
             _logger.LogError(exception, "Argumento não fornecido");
             context.Response.StatusCode = 400;
-            await context.Response.WriteAsJsonAsync(new {message = "Argumento não fornecido"});
+            await context.Response.WriteAsJsonAsync(new { message = "Argumento não fornecido" });
         }
-        catch(TimeoutException exception){
+        catch (TimeoutException exception) {
             _logger.LogError(exception, "Tempo de resposta excedido");
             context.Response.StatusCode = 408;
-            await context.Response.WriteAsJsonAsync(new {message = "Tempo de resposta excedido"});
+            await context.Response.WriteAsJsonAsync(new { message = "Tempo de resposta excedido" });
         }
-        catch(InvalidOperationException exception){
-            _logger.LogError(exception,"Operação inválida");
+        catch (InvalidOperationException exception) {
+            _logger.LogError(exception, "Operação inválida");
             context.Response.StatusCode = 500;
-            await context.Response.WriteAsJsonAsync(new {message = "Operação inválida"});
+            await context.Response.WriteAsJsonAsync(new { message = "Operação inválida" });
         }
-        catch(Exception exception){
+        catch (Exception exception) {
             _logger.LogError(exception, "Erro desconhecido");
             context.Response.StatusCode = 500;
-            await context.Response.WriteAsJsonAsync(new {message = "Erro desconhecido"});
+            await context.Response.WriteAsJsonAsync(new { message = "Erro desconhecido" });
         }
     }
 }

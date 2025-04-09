@@ -4,17 +4,17 @@ using Microsoft.AspNetCore.Mvc;
 [Authorize]
 [Controller]
 [Route("Session")]
-public class SessionController : ControllerBase{
+public class SessionController : ControllerBase {
     private readonly SessionService _sessionService;
     private readonly IHttpContextAccessor _httpContextAccessor;
-    public SessionController(SessionService sessionService, IHttpContextAccessor httpContextAccessor){
+    public SessionController(SessionService sessionService, IHttpContextAccessor httpContextAccessor) {
         _sessionService = sessionService;
         _httpContextAccessor = httpContextAccessor;
     }
 
     [HttpPost]
-    public async Task<IActionResult> Add([FromBody] SessionModel newSession){
-        if (newSession == null){
+    public async Task<IActionResult> Add([FromBody] SessionModel newSession) {
+        if (newSession == null) {
             return BadRequest("sessão não fornecida");
         }
 
@@ -23,20 +23,20 @@ public class SessionController : ControllerBase{
     }
 
     [HttpGet("{id}")]
-    public async Task<IActionResult> Get(int id){
+    public async Task<IActionResult> Get(int id) {
         SessionModel session = await _sessionService.FindById(id);
         return Ok(session);
     }
-    
+
     [HttpGet]
-    public async Task<IActionResult> GetAll(){
+    public async Task<IActionResult> GetAll() {
         List<SessionModel> sessionList = await _sessionService.FindAll();
         return Ok(sessionList);
     }
 
     [HttpPut("{id}")]
-    public async Task<IActionResult> Update(int id, [FromBody] SessionModel session){
-        if (session == null){
+    public async Task<IActionResult> Update(int id, [FromBody] SessionModel session) {
+        if (session == null) {
             return BadRequest("sessão não fornecida");
         }
 
@@ -45,7 +45,7 @@ public class SessionController : ControllerBase{
     }
 
     [HttpDelete("{id}")]
-    public async Task<IActionResult> Delete(int id){
+    public async Task<IActionResult> Delete(int id) {
         SessionModel deletedSession = await _sessionService.Delete(id);
         return Ok(deletedSession);
     }

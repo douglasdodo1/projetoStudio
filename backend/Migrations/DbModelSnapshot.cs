@@ -43,7 +43,7 @@ namespace backend.Migrations
                     b.ToTable("Address");
                 });
 
-            modelBuilder.Entity("AdressUserModel", b =>
+            modelBuilder.Entity("AddressUserModel", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -113,10 +113,10 @@ namespace backend.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("IdConsulta")
+                    b.Property<int>("IdService")
                         .HasColumnType("integer");
 
-                    b.Property<int>("IdServico")
+                    b.Property<int>("IdSession")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
@@ -175,6 +175,10 @@ namespace backend.Migrations
             modelBuilder.Entity("UserModel", b =>
                 {
                     b.Property<string>("Cpf")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<bool>("Employee")

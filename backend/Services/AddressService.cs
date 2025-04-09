@@ -2,17 +2,16 @@
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 
-public class AddressService : IAdressService{
+public class AddressService : IAdressService {
     private readonly AddressRepository _addressRepository;
 
-    public AddressService(AddressRepository addressRepository){
+    public AddressService(AddressRepository addressRepository) {
         _addressRepository = addressRepository;
     }
 
-    public async Task<AddressModel> AddAddress(AddressModel newAddress)
-    {
+    public async Task<AddressModel> AddAddress(AddressModel newAddress) {
         AddressModel findedAdress = await _addressRepository.FindById(newAddress.Id);
-        if (findedAdress != null){
+        if (findedAdress != null) {
             throw new KeyNotFoundException("endereço já cadastrado");
         }
 
@@ -20,40 +19,36 @@ public class AddressService : IAdressService{
         return addedAddress;
     }
 
-    public async Task<AddressModel> FindAddressById(int id)
-    {
+    public async Task<AddressModel> FindAddressById(int id) {
         AddressModel address = await _addressRepository.FindById(id);
-        if (address == null){
+        if (address == null) {
             throw new KeyNotFoundException("endereço não encontrado");
         }
 
         return address;
     }
 
-    public async Task<List<AddressModel>> FindAllAddress()
-    {
+    public async Task<List<AddressModel>> FindAllAddress() {
         List<AddressModel> addressList = await _addressRepository.FindAll();
         return addressList;
     }
 
-    public async Task<AddressModel> UpdateAddress(int id, AddressModel addressToUpdate)
-    {
+    public async Task<AddressModel> UpdateAddress(int id, AddressModel addressToUpdate) {
         AddressModel findedAddress = await _addressRepository.FindById(id);
-        if (findedAddress == null){
+        if (findedAddress == null) {
             throw new KeyNotFoundException("endereço não encontrado");
         }
 
         AddressModel updatedAddress = await _addressRepository.Update(addressToUpdate, findedAddress);
-        if (updatedAddress == null){
+        if (updatedAddress == null) {
             throw new InvalidOperationException("Erro ao atualizar serviço");
         }
         return updatedAddress;
     }
 
-    public async Task<AddressModel> DeleteAddress(int id)
-    {
+    public async Task<AddressModel> DeleteAddress(int id) {
         AddressModel addressToDelete = await _addressRepository.FindById(id);
-        if(addressToDelete == null){
+        if (addressToDelete == null) {
             throw new KeyNotFoundException("Endereço não encontrado");
         }
 
