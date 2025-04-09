@@ -7,6 +7,7 @@ public class SessionService : ISessionService{
     private readonly SessionValidator _validator;
     private readonly SessionRepository _sessionRepository;
     private readonly IHttpContextAccessor _httpContextAccessor;
+    
     public SessionService(SessionValidator validator, SessionRepository sessionRepository, IHttpContextAccessor httpContextAccessor){
         _validator = validator;
         _sessionRepository = sessionRepository;
@@ -15,17 +16,22 @@ public class SessionService : ISessionService{
 
     public async Task<SessionModel> Add(SessionModel session)
     {
+       
+
+        var cpf = _httpContextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.Name)?.Value;
+        if (cpf != null){
+            session.Cpf = cpf;
+}
+        else{
+            throw new InvalidOperationException("Usuário não autenticado");
+        }
+       
         var validationResult = _validator.Validate(session);
         var erros = string.Join("; ", validationResult.Errors.Select(e => e.ErrorMessage));
 
         if (!validationResult.IsValid){
             throw new ArgumentException(erros);
         }
-
-        Console.WriteLine("=========================================");
-        var cpf = _httpContextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.Name)?.Value;
-        Console.WriteLine(cpf);
-        session.Cpf = cpf;
 
         SessionModel findedSessionModel = await _sessionRepository.FindById(session.Id);
         if(findedSessionModel != null){
@@ -46,10 +52,7 @@ public class SessionService : ISessionService{
 
     public async Task<List<SessionModel>> FindAll()
     {
-        Console.WriteLine("=========================================");
         var cpf = _httpContextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.Name)?.Value;
-        Console.WriteLine(cpf);
-
         if (cpf == null){
             throw new InvalidOperationException("Usuário não autenticado");
         }

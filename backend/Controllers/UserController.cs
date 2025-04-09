@@ -1,7 +1,7 @@
-using System.Threading.Tasks;
-using FluentValidation;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
+[Authorize]
 [ApiController]
 [Route("User")]
 public class UsuarioController : ControllerBase {
@@ -23,6 +23,7 @@ public class UsuarioController : ControllerBase {
         return Created(nameof(Add),createdUser);
     }
 
+    [Authorize]
     [HttpGet("{cpf}")]
     public async Task<IActionResult> Get(string cpf){
         
@@ -31,12 +32,14 @@ public class UsuarioController : ControllerBase {
         return Ok(usuario);
     }
 
+    [Authorize]
     [HttpGet]
     public async Task<IActionResult> GetAll(){
         List<UserModel> userList = await _userService.FindAll();
         return Ok(userList);
     }
 
+    [Authorize]
     [HttpPut("{cpf}")]
     public async Task<IActionResult> Update(string cpf, [FromBody] UserModel usuario){
         if (cpf != usuario.Cpf){
@@ -48,6 +51,7 @@ public class UsuarioController : ControllerBase {
         return Ok(updatedUser);
     }
 
+    [Authorize]
     [HttpDelete("{cpf}")]
     public async Task<IActionResult> Delete(string cpf){
         if (cpf.Length != 11){

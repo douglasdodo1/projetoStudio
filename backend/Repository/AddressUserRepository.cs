@@ -20,9 +20,9 @@ public class AddressUserRepository : IAddressUserRepository
         return addressUser;
     }
 
-    public async Task<List<AddressUserModel>> FindAll()
+    public async Task<List<AddressUserModel>> FindAll(string cpf)
     {
-        List<AddressUserModel> addressUserList = await _db.AdressUser.ToListAsync();
+        List<AddressUserModel> addressUserList = await _db.AdressUser.Where(au => au.Cpf == cpf).ToListAsync();
         return addressUserList;
     }
 

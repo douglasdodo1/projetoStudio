@@ -1,6 +1,8 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
+[Authorize]
 [Controller]
 [Route("AddressUser")]
 public class AddressUserController : ControllerBase{

@@ -1,14 +1,18 @@
 using FluentValidation;
+using Microsoft.AspNetCore.Authorization;
 
 public class UserService : IUserService{
 
     private readonly UserRepository _userRepository;
     private readonly IValidator<UserModel> _validator;
-
-    public UserService(IValidator<UserModel> validador, UserRepository userRepository){
+    private PasswordHasher _passwordHasher;
+    public UserService(IValidator<UserModel> validador, UserRepository userRepository, PasswordHasher passwordHasher){
+        _passwordHasher = passwordHasher;
         _userRepository = userRepository ;
         _validator = validador;
     }
+
+   
     public async Task<UserModel> Add(UserModel user){
         var validationResult = _validator.Validate(user);
         var erros = string.Join("; ", validationResult.Errors.Select(e => e.ErrorMessage));
@@ -21,6 +25,9 @@ public class UserService : IUserService{
         if(FindedUser != null){
             throw new InvalidOperationException("Usuário já cadastrado.");
         }
+
+       
+        user.Password = _passwordHasher.HashPassword(user.Password, PasswordHasher.GenerateSalt());
 
         UserModel result = await _userRepository.Add(user);
         return result;

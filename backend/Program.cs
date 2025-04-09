@@ -38,6 +38,7 @@ builder.Services.AddScoped<StreetService>();
 builder.Services.AddScoped<StreetRepository>();
 builder.Services.AddScoped<AuthController>();
 builder.Services.AddScoped<AuthService>();
+builder.Services.AddScoped<PasswordHasher>();
 
 builder.Services.AddHttpContextAccessor();
 
