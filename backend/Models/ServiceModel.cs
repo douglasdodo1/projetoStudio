@@ -10,14 +10,13 @@ public class ServiceModel {
     public string Name { get; set; }
     public string Value { get; set; }
 
-    public ServiceModel(){}
-    public ServiceModel (string name, string value) {
+    public ServiceModel() { }
+    public ServiceModel(string name, string value) {
         Name = name;
         Value = value;
     }
 
-    public static implicit operator ServiceModel(EntityEntry<ServiceModel> v)
-    {
+    public static implicit operator ServiceModel(EntityEntry<ServiceModel> v) {
         throw new NotImplementedException();
     }
 }

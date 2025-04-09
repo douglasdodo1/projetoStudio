@@ -1,37 +1,29 @@
 using Microsoft.EntityFrameworkCore;
 
-public class UserRepository : IUserRepository{
+public class UserRepository : IUserRepository {
     private readonly Db _db;
 
-    public UserRepository(Db db)
-    {
+    public UserRepository(Db db) {
         _db = db;
     }
 
     public async Task<UserModel> Add(UserModel user) {
-        try
-        {
-            await _db.AddAsync(user);
-            await _db.SaveChangesAsync();
-            return user;
-        }
-        catch (Exception exception)
-        {
-            throw new Exception("Erro ao adicionar usuário: " + exception.Message);
-        }
+        await _db.AddAsync(user);
+        await _db.SaveChangesAsync();
+        return user;
+
     }
 
-    public async Task<UserModel> FindByCpf(string cpf){
+    public async Task<UserModel> FindByCpf(string cpf) {
         return await _db.User.FindAsync(cpf);
     }
 
-    public async Task<List<UserModel>> FindAll(){
+    public async Task<List<UserModel>> FindAll() {
         List<UserModel> userList = await _db.User.ToListAsync();
         return userList;
     }
 
-    public async Task<UserModel> Update(UserModel userToUpdate, UserModel findedUser)
-    {
+    public async Task<UserModel> Update(UserModel userToUpdate, UserModel findedUser) {
         findedUser.Name = userToUpdate.Name;
         findedUser.Password = userToUpdate.Password;
         findedUser.telephone = userToUpdate.telephone;
@@ -41,8 +33,8 @@ public class UserRepository : IUserRepository{
         return userToUpdate;
     }
 
-    public async Task<UserModel> Delete(UserModel userToDelete){
-        _db.User.Remove(userToDelete) ;
+    public async Task<UserModel> Delete(UserModel userToDelete) {
+        _db.User.Remove(userToDelete);
         await _db.SaveChangesAsync();
         return userToDelete;
     }

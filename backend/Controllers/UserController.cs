@@ -1,32 +1,29 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-[Authorize]
 [ApiController]
 [Route("User")]
 public class UsuarioController : ControllerBase {
+    private UserService _userService;
 
-    
-    private  UserService _userService;
-
-    public UsuarioController (UserService usuarioService){
-        _userService = usuarioService?? throw new ArgumentNullException(nameof(usuarioService));
+    public UsuarioController(UserService usuarioService) {
+        _userService = usuarioService ?? throw new ArgumentNullException(nameof(usuarioService));
     }
 
     [HttpPost]
-    public async Task<IActionResult> Add([FromBody] UserModel newUser){
-        if (newUser == null){
+    public async Task<IActionResult> Add([FromBody] UserModel newUser) {
+        if (newUser == null) {
             return BadRequest("usúario vazio");
         }
 
         UserModel createdUser = await _userService.Add(newUser);
-        return Created(nameof(Add),createdUser);
+        return Created(nameof(Add), createdUser);
     }
 
     [Authorize]
     [HttpGet("{cpf}")]
-    public async Task<IActionResult> Get(string cpf){
-        
+    public async Task<IActionResult> Get(string cpf) {
+
 
         var usuario = await _userService.FindByCpf(cpf);
         return Ok(usuario);
@@ -34,27 +31,26 @@ public class UsuarioController : ControllerBase {
 
     [Authorize]
     [HttpGet]
-    public async Task<IActionResult> GetAll(){
+    public async Task<IActionResult> GetAll() {
         List<UserModel> userList = await _userService.FindAll();
         return Ok(userList);
     }
 
     [Authorize]
     [HttpPut("{cpf}")]
-    public async Task<IActionResult> Update(string cpf, [FromBody] UserModel usuario){
-        if (cpf != usuario.Cpf){
-        return BadRequest("O CPF da URL deve ser o mesmo do corpo da requisição.");
+    public async Task<IActionResult> Update(string cpf, [FromBody] UserModel usuario) {
+        if (cpf != usuario.Cpf) {
+            return BadRequest("O CPF da URL deve ser o mesmo do corpo da requisição.");
         }
-        
+
 
         UserModel updatedUser = await _userService.Update(cpf, usuario);
         return Ok(updatedUser);
     }
 
-    [Authorize]
     [HttpDelete("{cpf}")]
-    public async Task<IActionResult> Delete(string cpf){
-        if (cpf.Length != 11){
+    public async Task<IActionResult> Delete(string cpf) {
+        if (cpf.Length != 11) {
             return BadRequest("Cpf inválido");
         }
 

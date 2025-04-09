@@ -1,8 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-public class AddressModel
-{
+public class AddressModel {
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int Id { get; set; }
@@ -12,8 +11,7 @@ public class AddressModel
 
     public AddressModel() { }
 
-    public AddressModel(int neighborhoodId, string streetId, int number)
-    {
+    public AddressModel(int neighborhoodId, string streetId, int number) {
         NeighborHoodId = neighborhoodId;
         StreetId = streetId;
         Number = number;
