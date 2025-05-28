@@ -4,7 +4,7 @@
 
 ## 📃 Descrição
 
-projetoStudio é uma aplicação full-stack para gerenciamento de sessões de serviço, endereços e usuários, com autenticação via JWT e UI responsiva em React + Tailwind CSS. O backend, construído em C# e .NET 9.0, utiliza Entity Framework Core para persistência em PostgreSQL. O frontend, com Vite e React 19, oferece navegação dinâmica e componentes estilizados.
+projetoStudio é uma aplicação full-stack voltada para um studio de beleza feminino, projetada para gerenciar sessões de serviço, endereços e usuários. O sistema possui autenticação via JWT e uma interface responsiva desenvolvida em React + Tailwind CSS. O backend, construído em C# com .NET 9.0, utiliza Entity Framework Core para persistência de dados em PostgreSQL. Já o frontend, criado com Vite e React 19, oferece navegação dinâmica e componentes estilizados.
 
 ## 📑 Tabela de Conteúdos
 
